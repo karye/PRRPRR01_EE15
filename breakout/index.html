@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="utf-8">
+    <title>Breakout klon</title>
+    <script src="js/phaser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        /* Skapa tom spelmotor */
+        var spel = new Phaser.Game(500, 400, Phaser.AUTO, null, {
+            preload: ladda,
+            create: bygga,
+            update: loop
+        });
+
+        /* Globala variabler */
+        var boll, sovjet;
+
+        /* Här hämtar vi in grafiken */
+        function ladda() {
+            /* Anpassar skalan till skärmen och centrerar */
+            spel.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+            spel.scale.pageAlignHorizontally = true;
+            spel.scale.pageAlignVertically = true;
+
+            /* Sätter bakgrundsfärgen */
+            spel.stage.backgroundColor = '#aec6d3';
+
+            /* Ladda grafiken till bollen */
+            spel.load.image('boll', 'bilder/ball.png');
+            spel.load.image('sovjet', 'bilder/sovjet.png');
+        }
+
+        /* Här bygger vi spelytan */
+        function bygga() {
+            boll = spel.add.sprite(50, 50, 'boll');
+            sovjet = spel.add.sprite(100, 100, 'sovjet');
+            sovjet = spel.add.sprite(100, 200, 'sovjet');
+            sovjet = spel.add.sprite(300, 200, 'sovjet');
+            sovjet = spel.add.sprite(300, 250, 'sovjet');
+            sovjet = spel.add.sprite(350, 150, 'sovjet');
+
+            //sovjet.scale.setTo(50, 50);
+        }
+
+        /* Här är koden till spelet */
+        function loop() {
+            boll.x += 10;
+            //sovjet.y -= 1;
+        }
+
+    </script>
+</body>
+
+</html>
