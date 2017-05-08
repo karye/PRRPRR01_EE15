@@ -23,10 +23,11 @@
         });
 
         /* Globala variabler */
-        var boll, sovjet;
+        var boll, sovjet, bas;
 
         /* Här hämtar vi in grafiken */
         function ladda() {
+
             /* Anpassar skalan till skärmen och centrerar */
             spel.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
             spel.scale.pageAlignHorizontally = true;
@@ -38,24 +39,58 @@
             /* Ladda grafiken till bollen */
             spel.load.image('boll', 'bilder/ball.png');
             spel.load.image('sovjet', 'bilder/sovjet.png');
+            spel.load.image('bas', 'bilder/paddle.png');
         }
 
         /* Här bygger vi spelytan */
         function bygga() {
+
+            /* Slå på riktig fysikaliska lagar */
+            spel.physics.startSystem(Phaser.Physics.ARCADE);
+
+            /* Rita ut grafiken */
             boll = spel.add.sprite(50, 50, 'boll');
             sovjet = spel.add.sprite(100, 100, 'sovjet');
-            sovjet = spel.add.sprite(100, 200, 'sovjet');
-            sovjet = spel.add.sprite(300, 200, 'sovjet');
-            sovjet = spel.add.sprite(300, 250, 'sovjet');
-            sovjet = spel.add.sprite(350, 150, 'sovjet');
+            bas = spel.add.sprite(spel.world.width/2, spel.world.height-50, 'bas');
+            bas.anchor.set(0.5, 1);
 
             //sovjet.scale.setTo(50, 50);
+
+            /* Ge bollen fysikaliska egenskaper */
+            spel.physics.enable(boll, Phaser.Physics.ARCADE);
+
+            /* Gör att vi kan kollidera med väggarna */
+            boll.body.collideWorldBounds = true;
+
+            /* Gör att bollen studsar */
+            boll.body.bounce.set(1);
+
+            /* Ge bollen gravitation */
+            boll.body.gravity.y = 100;
+
+            /* Ge bollen en spark */
+            boll.body.velocity.set(100, -50);
+
+            spel.physics.enable(sovjet, Phaser.Physics.ARCADE);
+//            sovjet.body.collideWorldBounds = true;
+//            sovjet.body.bounce.set(1);
+//            sovjet.body.gravity.y = 100;
+//            sovjet.body.velocity.set(100, -50);
+
+            /* Ge bas fysikaliska egenskaper */
+            spel.physics.enable(bas, Phaser.Physics.ARCADE);
+
+            /* Men bas måste förbli orörlig */
+            bas.body.immovable = true;
         }
 
         /* Här är koden till spelet */
         function loop() {
-            boll.x += 10;
-            //sovjet.y -= 1;
+//            spel.physics.arcade.collide(boll, sovjet);
+            spel.physics.arcade.collide(boll, bas);
+
+            /* Koppla in musen på bas */
+            bas.x = spel.input.x;
         }
 
     </script>
