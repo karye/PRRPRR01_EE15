@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="utf-8">
+    <title>Moonlander</title>
+    <script src="js/phaser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        /* Skapa tom spelmotor */
+        var spel = new Phaser.Game(1000, 800, Phaser.AUTO, null, {
+            preload: ladda,
+            create: bygga,
+            update: loop
+        });
+
+        /* Globala variabler */
+        var boll, sovjet, bas;
+
+        /* Här hämtar vi in grafiken */
+        function ladda() {
+            //spel.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+            spel.scale.pageAlignHorizontally = true;
+            spel.scale.pageAlignVertically = true;
+            spel.stage.backgroundColor = '#aec6d3';
+            spel.load.image('lander', 'bilder/lander.png');
+        }
+
+        /* Här bygger vi spelytan */
+        function bygga() {
+            spel.physics.startSystem(Phaser.Physics.ARCADE);
+
+            lander = spel.add.sprite(50, 50, 'lander');
+            lander.anchor.setTo(0.5, 0.5);
+            spel.physics.enable(lander, Phaser.Physics.ARCADE);
+
+            lander.body.collideWorldBounds = true;
+            //lander.body.bounce.set(1);
+
+            lander.body.gravity.y = 100;
+            lander.body.velocity.set(0, -10);
+        }
+
+        /* Här är koden till spelet */
+        function loop() {
+
+            if (spel.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+                lander.body.velocity.x += 1;
+            }
+
+            if (spel.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+                lander.body.velocity.x -= 1;
+            }
+
+            if (spel.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+                lander.body.velocity.y -= 5;
+            }
+        }
+    </script>
+</body>
+
+</html>

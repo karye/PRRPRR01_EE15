@@ -82,6 +82,7 @@
 
             /* Men bas måste förbli orörlig */
             bas.body.immovable = true;
+
         }
 
         /* Här är koden till spelet */
@@ -90,9 +91,19 @@
             spel.physics.arcade.collide(boll, bas);
 
             /* Koppla in musen på bas */
-            bas.x = spel.input.x;
-        }
+            //bas.x = spel.input.x;
 
+            /* Flytta ett steg åt höger när vi trycker pil-höger */
+            if (spel.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+                bas.x += 5;
+            }
+
+            /* Flytta ett steg åt vänster när vi trycker pil-vänster */
+            if (spel.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+                bas.x -= 5;
+            }
+
+        }
     </script>
 </body>
 
