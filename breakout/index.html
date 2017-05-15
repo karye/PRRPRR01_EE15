@@ -23,7 +23,8 @@
         });
 
         /* Globala variabler */
-        var boll, sovjet, bas;
+        var boll, bas;
+        var bricka, brickor, brickorInfo;
 
         /* Här hämtar vi in grafiken */
         function ladda() {
@@ -40,6 +41,7 @@
             spel.load.image('boll', 'bilder/ball.png');
             spel.load.image('sovjet', 'bilder/sovjet.png');
             spel.load.image('bas', 'bilder/paddle.png');
+            spel.load.image('bricka', 'bilder/brick.png');
         }
 
         /* Här bygger vi spelytan */
@@ -49,60 +51,72 @@
             spel.physics.startSystem(Phaser.Physics.ARCADE);
 
             /* Rita ut grafiken */
-            boll = spel.add.sprite(50, 50, 'boll');
-            sovjet = spel.add.sprite(100, 100, 'sovjet');
-            bas = spel.add.sprite(spel.world.width/2, spel.world.height-50, 'bas');
+            boll = spel.add.sprite(spel.world.width/2, spel.world.height-50, 'boll');
+            boll.anchor.set(0.5);
+            bas = spel.add.sprite(spel.world.width/2, spel.world.height-25, 'bas');
             bas.anchor.set(0.5, 1);
-
-            //sovjet.scale.setTo(50, 50);
 
             /* Ge bollen fysikaliska egenskaper */
             spel.physics.enable(boll, Phaser.Physics.ARCADE);
-
             /* Gör att vi kan kollidera med väggarna */
             boll.body.collideWorldBounds = true;
-
             /* Gör att bollen studsar */
             boll.body.bounce.set(1);
-
-            /* Ge bollen gravitation */
-            boll.body.gravity.y = 100;
-
-            /* Ge bollen en spark */
-            boll.body.velocity.set(100, -50);
-
-            spel.physics.enable(sovjet, Phaser.Physics.ARCADE);
-//            sovjet.body.collideWorldBounds = true;
-//            sovjet.body.bounce.set(1);
-//            sovjet.body.gravity.y = 100;
-//            sovjet.body.velocity.set(100, -50);
+            boll.body.velocity.set(150, -150);
 
             /* Ge bas fysikaliska egenskaper */
             spel.physics.enable(bas, Phaser.Physics.ARCADE);
-
             /* Men bas måste förbli orörlig */
             bas.body.immovable = true;
 
+            spel.physics.arcade.checkCollision.down = false;
+            boll.checkWorldBounds = true;
+            boll.events.onOutOfBounds.add(function(){
+                alert("Game over!");
+                location.reload();
+            }, this);
+
+            /* Skapa brickorna */
+            initBrickor();
         }
 
         /* Här är koden till spelet */
         function loop() {
-//            spel.physics.arcade.collide(boll, sovjet);
             spel.physics.arcade.collide(boll, bas);
 
-            /* Koppla in musen på bas */
-            //bas.x = spel.input.x;
-
             /* Flytta ett steg åt höger när vi trycker pil-höger */
-            if (spel.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+            if (spel.input.keyboard.isDown(Phaser.Keyboard.RIGHT) && bas.x < spel.world.width ) {
                 bas.x += 5;
             }
 
             /* Flytta ett steg åt vänster när vi trycker pil-vänster */
-            if (spel.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+            if (spel.input.keyboard.isDown(Phaser.Keyboard.LEFT) && bas.x > 0) {
                 bas.x -= 5;
             }
+        }
 
+        function initBrickor() {
+            brickorInfo = {
+                width: 50,
+                height: 20,
+                count: {
+                    row: 7,
+                    col: 3
+                },
+                offset: {
+                    top: 50,
+                    left: 60
+                },
+                padding: 10
+            };
+
+            brickor = spel.add.group();
+
+            for (c=0; c<brickorInfo.count.col; c++) {
+                for (r=0; r<brickorInfo.count.row; r++) {
+
+                }
+            }
         }
     </script>
 </body>
